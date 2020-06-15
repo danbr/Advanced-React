@@ -1,11 +1,11 @@
 import withApollo from "next-with-apollo";
 import ApolloClient from "apollo-boost";
-import { endpoint } from "../config";
+import { endpoint, prodEndpoint } from "../config";
 import { LOCAL_STATE_QUERY } from "../components/Cart";
 
 function createClient({ headers }) {
   return new ApolloClient({
-    uri: process.env.NODE_ENV === "development" ? endpoint : endpoint,
+    uri: process.env.NODE_ENV === "development" ? endpoint : prodEndpoint,
     request: (operation) => {
       operation.setContext({
         fetchOptions: {
@@ -25,7 +25,7 @@ function createClient({ headers }) {
             });
             //write cart state to the opposite
             const data = {
-              data: { cartOpen: !cartOpen }
+              data: { cartOpen: !cartOpen },
             };
             cache.writeData(data);
             return data;
